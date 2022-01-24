@@ -1,7 +1,6 @@
-import datetime as _dt
+from datetime import date
 import sqlalchemy as _sql
 import sqlalchemy.orm as _orm
-import passlib.hash as _hash
 import database as _database
 
 
@@ -11,9 +10,9 @@ class Product(_database.Base):
     name = _sql.Column(_sql.Integer, unique=True, index=True)
     url = _sql.Column(_sql.String, unique=True)
     type = _sql.Column(_sql.String)
+    total_price = _sql.Column(_sql.Float)
     pieces = _sql.Column(_sql.Integer)
     in_stock = _sql.Column(_sql.Boolean, unique=False, default=False)
-    date_parsed = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)
 
     prices = _orm.relationship("Price", back_populates="price")
 
@@ -24,6 +23,6 @@ class Price(_database.Base):
     product_id = _sql.Column(_sql.Integer, _sql.ForeignKey("products.id"))
     total_price = _sql.Column(_sql.Float)
     price_per_oz = _sql.Column(_sql.Float)
-    date = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)
+    date = _sql.Column(_sql.DateTime, default=date.today())
 
     price = _orm.relationship("Product", back_populates="prices")

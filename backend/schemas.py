@@ -8,6 +8,8 @@ class _ProductBase(_pydantic.BaseModel):
 class ProductCreate(_pydantic.BaseModel):
     name: str
     type: str
+    url: str
+    total_price: float
     pieces: int
     in_stock: bool
 
@@ -15,6 +17,7 @@ class ProductCreate(_pydantic.BaseModel):
         orm_mode = True
 
 class Product(_ProductBase):
+    id: int
     name: str
     url: str
     type: str
@@ -35,6 +38,8 @@ class PriceCreate(_PriceBase):
 class Price(_PriceBase):
     id: int
     product_id: int
+    total_price: float
+    price_per_oz: float
     date: _dt.datetime
 
     class Config:
