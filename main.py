@@ -1,13 +1,25 @@
 from typing import List
 import fastapi as _fastapi
 import fastapi.security as _security
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 
 import sqlalchemy.orm as _orm
 
 import services as _services, schemas as _schemas
 
-app = _fastapi.FastAPI()
+_services.create_database()
 
+app = _fastapi.FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
+app.add_middleware(GZipMiddleware)
 
 @app.post("/api/products")
 async def create_product(
