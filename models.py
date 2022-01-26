@@ -7,7 +7,7 @@ import database as _database
 class Product(_database.Base):
     __tablename__ = "products"
     id = _sql.Column(_sql.Integer, primary_key=True, index=True)
-    name = _sql.Column(_sql.Integer, unique=True, index=True)
+    name = _sql.Column(_sql.String, unique=True, index=True)
     url = _sql.Column(_sql.String, unique=True)
     type = _sql.Column(_sql.String)
     total_price = _sql.Column(_sql.Float)
