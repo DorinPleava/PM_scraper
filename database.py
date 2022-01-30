@@ -11,14 +11,18 @@ db_username = _urllib.parse.quote_plus(str(_os.environ.get('db_username', 'postg
 db_password = _urllib.parse.quote_plus(str(_os.environ.get('db_password', 'secret')))
 ssl_mode = _urllib.parse.quote_plus(str(_os.environ.get('ssl_mode','prefer')))
 
-# DATABASE_URL = "sqlite:///./database.db"
+# DATABASE_URL = "sqlite:///./database.db?check_same_thread=False"
 DATABASE_URL = 'postgresql://{}:{}@{}:{}/{}?sslmode={}'.format(db_username, db_password, db_server, db_port, db_name, ssl_mode)
 
 engine = _sql.create_engine(
+    # azure setting ?
     DATABASE_URL, echo=True
+
+    # local setting
+    # DATABASE_URL #, check_same_thread=False,
+
     # DATABASE_URL, pool_size=3, max_overflow=0
 )
-# engine = _sql.create_engine(conn_str,echo=True)
 
 SessionLocal = _orm.sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

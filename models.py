@@ -1,4 +1,4 @@
-from datetime import date
+import datetime as _dt
 import sqlalchemy as _sql
 import sqlalchemy.orm as _orm
 import database as _database
@@ -23,6 +23,6 @@ class Price(_database.Base):
     product_id = _sql.Column(_sql.Integer, _sql.ForeignKey("products.id"))
     total_price = _sql.Column(_sql.Float)
     price_per_oz = _sql.Column(_sql.Float)
-    date = _sql.Column(_sql.DateTime, default=date.today())
+    date = _sql.Column(_sql.DateTime, default=_dt.datetime.now())
 
     price = _orm.relationship("Product", back_populates="prices")

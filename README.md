@@ -6,8 +6,9 @@ It will be consumed by a react app later (or anything)
 
 TODO:
 Add authentication for POST
-Add comparation to spot silver price to see premiums
+Add comparation to spot silver price to see premiums (will be done in the reactjs app)
 Compare same piece with different websites (link them by name???)
+Link product name across multiple websites
 
 
 API:

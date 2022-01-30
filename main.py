@@ -23,7 +23,7 @@ app.add_middleware(GZipMiddleware)
 
 @app.post("/api/products")
 async def create_product(
-    product: _schemas.ProductCreate,
+    product: _schemas.Product,
     db: _orm.Session = _fastapi.Depends(_services.get_db),
 ):
     total_price = product.total_price
@@ -46,9 +46,16 @@ async def create_product(
 #     pass
 
 @app.get("/api/product_prices{product_id}", response_model=List[_schemas.Price])
-async def get_products(
+async def get_product_prices(
     product_id,
     db: _orm.Session = _fastapi.Depends(_services.get_db),
 ):
 
     return await _services.get_prices_per_product(product_id,db=db)
+
+@app.get("/api/products", response_model=List[_schemas.ProductOut])
+async def get_products(
+    db: _orm.Session = _fastapi.Depends(_services.get_db),
+):
+
+    return await _services.get_products(db)

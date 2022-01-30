@@ -1,5 +1,5 @@
 import database as _database
-from datetime import date
+import datetime as _dt
 import models as _models
 import sqlalchemy.orm as _orm
 import schemas as _schemas
@@ -7,6 +7,7 @@ import schemas as _schemas
 
 def create_database():
     return _database.Base.metadata.create_all(bind=_database.engine)
+
 
 def get_db():
     db = _database.SessionLocal()
@@ -21,12 +22,13 @@ async def get_product_by_name(name: str, db: _orm.Session):
     return db.query(_models.Product).filter(_models.Product.name == name).first()
 
 
-async def create_product(product: _schemas.ProductCreate, db: _orm.Session):
+async def create_product(product: _schemas.Product, db: _orm.Session):
 
     product_obj = _models.Product(
         name=product.name,
         url=product.url,
         type=product.type,
+        total_price=product.total_price,
         pieces=product.pieces,
         in_stock=product.in_stock,
     )
@@ -45,7 +47,7 @@ async def create_price_for_product(
         product_id=product_id,
         total_price=total_price,
         price_per_oz=123.32,
-        date=date.today(),
+        date=_dt.datetime.now(),
     )
 
     db.add(price_obj)
@@ -54,7 +56,8 @@ async def create_price_for_product(
     return price_obj
 
 
-# async def get_products()
+async def get_products(db: _orm.Session):
+    return db.query(_models.Product).all()
 
 
 async def get_prices_per_product(prod_id: int, db: _orm.Session):
