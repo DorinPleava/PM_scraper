@@ -1,21 +1,8 @@
 import datetime as _dt
+from typing import List, Optional
 
 
 import pydantic as _pydantic
-
-
-class Product(_pydantic.BaseModel):
-    id: int
-    name: str
-    url: str
-    type: str
-    total_price: float
-    pieces: int
-    in_stock: bool
-    date_parsed: _dt.datetime
-
-    class Config:
-        orm_mode = True
 
 
 class Price(_pydantic.BaseModel):
@@ -24,20 +11,31 @@ class Price(_pydantic.BaseModel):
     total_price: float
     price_per_oz: float
     date: _dt.datetime
+    url: str
 
     class Config:
         orm_mode = True
 
 
-class ProductOut(_pydantic.BaseModel):
+class Product(_pydantic.BaseModel):
     id: int
     name: str
-    url: str
     type: str
-    prices: list[Price]
     pieces: int
     in_stock: bool
-    date_parsed: _dt.datetime
+
+
+class ProductIn(Product):
+    total_price: float
+    url: str
 
     class Config:
         orm_mode = True
+
+
+class ProductOut(Product):
+    prices: List[Price]
+
+    class Config:
+        orm_mode = True
+

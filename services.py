@@ -22,11 +22,10 @@ async def get_product_by_name(name: str, db: _orm.Session):
     return db.query(_models.Product).filter(_models.Product.name == name).first()
 
 
-async def create_product(product: _schemas.Product, db: _orm.Session):
+async def create_product(product: _schemas.ProductIn, db: _orm.Session):
 
     product_obj = _models.Product(
         name=product.name,
-        url=product.url,
         type=product.type,
         total_price=product.total_price,
         pieces=product.pieces,
@@ -40,7 +39,7 @@ async def create_product(product: _schemas.Product, db: _orm.Session):
 
 
 async def create_price_for_product(
-    product_id: int, total_price: float, db: _orm.Session
+    product_id: int, total_price: float, price_url: str, db: _orm.Session
 ):
 
     price_obj = _models.Price(
@@ -48,6 +47,7 @@ async def create_price_for_product(
         total_price=total_price,
         price_per_oz=123.32,
         date=_dt.datetime.now(),
+        url=price_url,
     )
 
     db.add(price_obj)
@@ -57,10 +57,10 @@ async def create_price_for_product(
 
 
 async def get_products(db: _orm.Session):
+
     return db.query(_models.Product).all()
 
-
 async def get_prices_per_product(prod_id: int, db: _orm.Session):
-    prices = db.query(_models.Price).filter_by(product_id=prod_id)
 
+    prices = db.query(_models.Price).filter_by(product_id=prod_id)
     return list(map(_schemas.Price.from_orm, prices))
