@@ -1,6 +1,5 @@
 from typing import List
 import fastapi as _fastapi
-import fastapi.security as _security
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 

@@ -1,4 +1,5 @@
 # PM_scraper
+
 Stores the scrapped info for finding the best precious metals prices
 
 This API only stores the informations required

@@ -10,3 +10,7 @@ h11
 psycopg2-binary
 starlette
 websockets
+
+#for testing       #new
+pytest
+requests
