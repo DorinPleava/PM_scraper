@@ -22,7 +22,9 @@ async def get_product_by_name(name: str, db: _orm.Session):
     return db.query(_models.Product).filter(_models.Product.name == name).first()
 
 
-async def create_product(product: _schemas.ProductIn, db: _orm.Session):
+async def create_product(
+    product: _schemas.ProductIn, db: _orm.Session, batch: bool = False
+):
 
     product_obj = _models.Product(
         name=product.name,
@@ -33,13 +35,18 @@ async def create_product(product: _schemas.ProductIn, db: _orm.Session):
     )
 
     db.add(product_obj)
-    db.commit()
-    db.refresh(product_obj)
+    if batch is False:
+        db.commit()
+        db.refresh(product_obj)
     return product_obj
 
 
 async def create_price_for_product(
-    product_id: int, total_price: float, price_url: str, db: _orm.Session
+    product_id: int,
+    total_price: float,
+    price_url: str,
+    db: _orm.Session,
+    batch: bool = False,
 ):
 
     price_obj = _models.Price(
@@ -51,8 +58,9 @@ async def create_price_for_product(
     )
 
     db.add(price_obj)
-    db.commit()
-    db.refresh(price_obj)
+    if batch is False:
+        db.commit()
+        db.refresh(price_obj)
     return price_obj
 
 
@@ -60,7 +68,18 @@ async def get_products(db: _orm.Session):
 
     return db.query(_models.Product).all()
 
+
 async def get_prices_per_product(prod_id: int, db: _orm.Session):
 
     prices = db.query(_models.Price).filter_by(product_id=prod_id)
     return list(map(_schemas.Price.from_orm, prices))
+
+
+async def clear_db(db: _orm.Session):
+
+    for product in db.query(_models.Product).all():
+        db.delete(product)
+
+    db.commit()
+
+    return True
